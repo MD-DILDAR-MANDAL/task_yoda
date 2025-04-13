@@ -12,7 +12,7 @@ void main() async{
   //registering the adapter
   Hive.registerAdapter(TaskAdapter());
   //opening the box
-  await Hive.openBox('myTaskBox');
+  await Hive.openBox<Task>('my_task_box');
 
   runApp(const MyApp());
 

@@ -10,7 +10,7 @@ class buildTaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //getting refererence to an already opened Box
-    final Box<Task> taskBox = Hive.box<Task>('myTaskBox');
+    final Box <Task> taskBox = Hive.box('my_task_box');
     final now = DateTime.now();
     final today = DateUtils.dateOnly(now);
 
