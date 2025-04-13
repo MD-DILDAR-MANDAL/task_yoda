@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './task_list.dart';
 
 class FrontScreen extends StatelessWidget {
   const FrontScreen({super.key});
@@ -81,28 +82,26 @@ class __buildTaskTypeState extends State<_buildTaskType> {
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      {'label' : 'All'},
-      {'label' : 'Work'},
-      {'label' : 'Personal'},
-      {'label' : 'Other'},
-    ];
+    final items = ['All','Work','Personal','Other'];
+
     return Column(
       children: [
-                Divider(
+        Divider(
           color: Colors.white,
           height: 20,
         ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(items.length,(index){
             return _Menuoption(
-              label: items[index]['label'] as String, 
-              isSelected: _selectedIndex==index,
+              label: items[index], 
+              isSelected: _selectedIndex == index,
               onTap: () =>_onItemTap(index),
             );
           }),
         ),
+
         SizedBox(
           width: 360,
           child: Divider(
@@ -110,13 +109,22 @@ class __buildTaskTypeState extends State<_buildTaskType> {
             height: 20,
           ),
         ),
+
+        Column(
+          children: [
+            buildTaskList(ind: _selectedIndex),
+          ],
+        ),
       ],
     );
   }
 }
 
+///this is inside the List.generate constructor
+///List.generator invokes the creation of an object _Menuoption with
+///the value passed as arguments.
 class _Menuoption extends StatelessWidget {
-  const _Menuoption({required this.label,required this.isSelected ,required this.onTap});
+  const _Menuoption({required this.label, required this.isSelected , required this.onTap});
   
   final String label;
   final bool isSelected;
@@ -127,6 +135,7 @@ class _Menuoption extends StatelessWidget {
     final color = isSelected ? Color(0xFF6B8E23):Color(0xFF2F4F4F);
     final textDecoration = isSelected? TextDecoration.underline: TextDecoration.none;
     
+    ///the gesture detector is applied on each of the options
     return GestureDetector(
       onTap: onTap,
       child: Column(
