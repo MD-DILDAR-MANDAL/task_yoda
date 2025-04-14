@@ -90,7 +90,7 @@ class buildTaskList extends StatelessWidget {
             task.save();
           },
           title: Text(task.name),
-          subtitle: Text('$task.category . $formattedDate . $formattedTime'),
+          subtitle: Text('${task.category} . $formattedDate . $formattedTime'),
         );
       },
     );
