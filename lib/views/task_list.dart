@@ -1,141 +1,95 @@
-
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-class buildTaskList extends StatefulWidget {
-  const buildTaskList({required this.ind, super.key});
+class buildTaskList extends StatelessWidget {
+  const buildTaskList({super.key, required this.ind});
   final int ind;
 
   @override
-  State<buildTaskList> createState() => _buildTaskListState();
-}
-
-class _buildTaskListState extends State<buildTaskList> {
-  @override
   Widget build(BuildContext context) {
-    //getting refererence to an already opened Box
-    final Box <Task> taskBox = Hive.box('my_task_box');
-    final now = DateTime.now();
-    final today = DateUtils.dateOnly(now);
-    final String type = switch(widget.ind){
-      1 => 'Work',
-      2 => 'Personal',
-      3 => 'Other',
-      _ => 'All',
-    };
-    //taskBox.clear();
-    if (taskBox.isEmpty) {
-    taskBox.addAll([
-      Task(
-        category: 'Work',
-        name: 'Submit report',
-        dateTime: DateTime.now(),
-        isDone: false,
-      ),
-      Task(
-        category: 'Personal',
-        name: 'Buy groceries',
-        dateTime: DateTime.now().add(Duration(days: 1)),
-        isDone: false,
-      ),
-      Task(
-        category: 'Work',
-        name: 'Team meeting',
-        dateTime: DateTime.now().subtract(Duration(days: 1)),
-        isDone: true,
-      ),
-      Task(
-        category: 'Work',
-        name: 'Study Dsa',
-        dateTime: DateTime.now(),
-        isDone: false,
-      ),
-      Task(
-        category: 'Personal',
-        name: 'Buy surf',
-        dateTime: DateTime.now(),
-        isDone: false,
-      ),
-      Task(
-        category: 'Other',
-        name: 'Riding',
-        dateTime: DateTime.now().add(Duration(days: 2)),
-        isDone: true,
-      ),
-    ]);
-    }
+    final Box<Task> taskBox = Hive.box<Task>('my_task_box');
 
-    final tasks = taskBox.values.toList();
+    return ValueListenableBuilder(
+      valueListenable: taskBox.listenable(),
+      builder: (context, Box<Task> box, _) {
+        final now = DateTime.now();
+        final today = DateUtils.dateOnly(now);
+        final String type = switch (ind) {
+          1 => 'Work',
+          2 => 'Personal',
+          3 => 'Other',
+          _ => 'All',
+        };
 
-    final todayTasks = tasks
-    .where((t) => (t.category==type||type == 'All') && !t.isDone 
-    && ((DateUtils.dateOnly(t.dateTime)==today)||(DateUtils.dateOnly(t.dateTime).isBefore(today)))).toList();
+        final tasks = box.values.toList();
 
-    final futureTasks = tasks
-    .where((t) => (t.category==type||type == 'All') && !t.isDone 
-    && DateUtils.dateOnly(t.dateTime).isAfter(today)).toList();
-    
-    final completedTasks = tasks.where((t)=>
-    (t.category==type||type == 'All') && t.isDone).toList();
+        final todayTasks = tasks.where((t) =>
+            (t.category == type || type == 'All') &&
+            !t.isDone &&
+            (DateUtils.dateOnly(t.dateTime) == today || DateUtils.dateOnly(t.dateTime).isBefore(today))
+        ).toList();
 
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildTile('Today', todayTasks),
-            _buildTile('Future', futureTasks),
-            _buildTile('Completed', completedTasks)
-          ],
-        ),
-      ),
-    );
-  }
+        final futureTasks = tasks.where((t) =>
+            (t.category == type || type == 'All') &&
+            !t.isDone &&
+            DateUtils.dateOnly(t.dateTime).isAfter(today)
+        ).toList();
 
-  Widget _buildTile(String title, List<Task>tasks){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:[
-            Text(title,
-              style:TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF6B8E23), 
-              ),
+        final completedTasks = tasks.where((t) =>
+            (t.category == type || type == 'All') && t.isDone
+        ).toList();
+
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildTile('Today', todayTasks),
+                _buildTile('Future', futureTasks),
+                _buildTile('Completed', completedTasks),
+              ],
             ),
-            SizedBox(
-              height:140,
-              child: _buildList(tasks)
-              ),
-            Divider(
-              color: Color(0xFF2F4F4F),
-              height: 10,
-            ),
-      ],
-    );
-  }
-
-  Widget _buildList(List<Task>tasks){
-    
-    return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (context,index){
-        final task = tasks[index];
-        final formattedDate = 
-        DateFormat.yMMMd().format(task.dateTime);
-        final formattedTime = 
-        DateFormat.Hm().format(task.dateTime);
-
-        return checkData(
-          task: task, 
-          formattedDate: formattedDate, 
-          formattedTime: formattedTime,
-          onChanged: ()=>setState(() { }),
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildTile(String title, List<Task> tasks) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF6B8E23),
+          ),
+        ),
+        SizedBox(
+          height: 180,
+          child: ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              final task = tasks[index];
+              final formattedDate = DateFormat.yMMMd().format(task.dateTime);
+              final formattedTime = DateFormat.Hm().format(task.dateTime);
+
+              return checkData(
+                task: task,
+                formattedDate: formattedDate,
+                formattedTime: formattedTime,
+                onChanged: () {}, // No need for setState, ValueListenableBuilder handles it
+              );
+            },
+          ),
+        ),
+        const Divider(color: Color(0xFF2F4F4F), height: 12),
+      ],
     );
   }
 }
@@ -163,24 +117,48 @@ class _checkDataState extends State<checkData> {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       value: widget.task.isDone,
-      onChanged: (val){
+      onChanged: (val) {
         setState(() {
-          widget.task.isDone = val?? false;
-          widget.task.save();          
+          widget.task.isDone = val ?? false;
+          widget.task.save();
         });
-        widget.onChanged();
+        widget.onChanged(); // Triggers parent rebuild
       },
       dense: true,
       checkboxScaleFactor: 0.8,
       controlAffinity: ListTileControlAffinity.leading,
-      title: Text(widget.task.name,
-      style: TextStyle(
-        fontSize: 16,
-        decoration: widget.task.isDone
-        ?TextDecoration.lineThrough:TextDecoration.none,
-        ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.task.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                    decoration: widget.task.isDone
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${widget.task.category} • ${widget.formattedDate} • ${widget.formattedTime}',
+                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red[700]),
+            onPressed: () {
+              widget.task.delete();
+              widget.onChanged(); // Trigger list update on delete
+            },
+          ),
+        ],
       ),
-      subtitle: Text('${widget.task.category} . ${widget.formattedDate} . ${widget.formattedTime}'),
     );
   }
 }
