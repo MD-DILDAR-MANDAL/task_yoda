@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import '../models/task.dart';
@@ -82,14 +81,16 @@ class _buildTaskListState extends State<buildTaskList> {
     (t.category==type||type == 'All') && t.isDone).toList();
 
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildTile('Today', todayTasks),
-          _buildTile('Future', futureTasks),
-          _buildTile('Completed', completedTasks)
-        ],
+      padding: const EdgeInsets.all(12.0),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildTile('Today', todayTasks),
+            _buildTile('Future', futureTasks),
+            _buildTile('Completed', completedTasks)
+          ],
+        ),
       ),
     );
   }
@@ -100,15 +101,18 @@ class _buildTaskListState extends State<buildTaskList> {
       children:[
             Text(title,
               style:TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF6B8E23), 
               ),
             ),
-            _buildList(tasks),
+            SizedBox(
+              height:140,
+              child: _buildList(tasks)
+              ),
             Divider(
               color: Color(0xFF2F4F4F),
-              height: 20,
+              height: 10,
             ),
       ],
     );
@@ -118,8 +122,6 @@ class _buildTaskListState extends State<buildTaskList> {
     
     return ListView.builder(
       itemCount: tasks.length,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context,index){
         final task = tasks[index];
         final formattedDate = 
@@ -168,9 +170,12 @@ class _checkDataState extends State<checkData> {
         });
         widget.onChanged();
       },
+      dense: true,
+      checkboxScaleFactor: 0.8,
       controlAffinity: ListTileControlAffinity.leading,
       title: Text(widget.task.name,
       style: TextStyle(
+        fontSize: 16,
         decoration: widget.task.isDone
         ?TextDecoration.lineThrough:TextDecoration.none,
         ),

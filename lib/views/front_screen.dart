@@ -13,53 +13,24 @@ class FrontScreen extends StatelessWidget {
         centerTitle: true,
         title: Text('Task Yoda',
                 style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-        actions: [
-          IconButton(
-            onPressed:(){
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(),
-               );
-            },
-           icon: const Icon(Icons.search),
-           ),
-        ],
+                ),        
         /*add it later*/
         leading: IconButton(
           onPressed: (){}, 
           icon: const Icon(Icons.menu)),
       ),
       body: _buildTaskType(),
-   
+      floatingActionButton: _addTaskButton(),   
     );
   }
-}
-
-/*add it later*/
-class CustomSearchDelegate extends SearchDelegate{
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    // TODO: implement buildActions
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    throw UnimplementedError();
+  
+  Widget _addTaskButton() {
+    return FloatingActionButton(
+      foregroundColor: Color(0xFF2F4F4F),
+      backgroundColor: Color(0xFFA8D1A1),
+      child: const Icon(Icons.add),
+      onPressed: (){}
+      );
   }
 }
 
@@ -112,10 +83,8 @@ class __buildTaskTypeState extends State<_buildTaskType> {
           ),
         ),
 
-        Column(
-          children: [
-            buildTaskList(ind: _selectedIndex),
-          ],
+        Expanded(
+            child: buildTaskList(ind: _selectedIndex),
         ),
       ],
     );
