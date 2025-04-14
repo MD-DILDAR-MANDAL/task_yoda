@@ -102,11 +102,13 @@ class __buildTaskTypeState extends State<_buildTaskType> {
           }),
         ),
 
-        SizedBox(
-          width: 360,
-          child: Divider(
-            color: Color(0xFF2F4F4F),
-            height: 20,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            child: Divider(
+              color: Color(0xFF2F4F4F),
+              height: 20,
+            ),
           ),
         ),
 
