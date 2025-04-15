@@ -32,9 +32,18 @@ class _FrontScreenState extends State<FrontScreen> {
           'Task Yoda',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
+        // leading: IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.menu),
+        // ),
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Image.asset("assets/drawer.png",
+            ),
+            Text('Thanks for using this app'),
+          ],
         ),
       ),
       body: Column(
