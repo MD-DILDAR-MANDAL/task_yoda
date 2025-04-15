@@ -103,10 +103,10 @@ class buildTaskList extends StatelessWidget {
         bottom: 60,
         right: 0,
         child: Opacity(
-          opacity: 0.5, // Adjust opacity here
+          opacity: 0.4, // Adjust opacity here
           child: Image.asset(
             imagePath,
-            width: 100, // Adjust size
+            width: 130, // Adjust size
             fit: BoxFit.contain,
           ),
         ),
@@ -197,18 +197,24 @@ class _checkDataState extends State<checkData> {
                 Text(
                   widget.task.name,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     decoration: widget.task.isDone
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                         color: Color(0xFF2F4F4F),
                   ),
                 ),
+                
                 const SizedBox(height: 2),
+                
                 Text(
                   '${widget.task.category} • ${widget.formattedDate} • ${widget.formattedTime}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  style: TextStyle(
+                    fontSize: 14, 
+                    color: Colors.grey[700]
+                    ),
                 ),
+
               ],
             ),
           ),
