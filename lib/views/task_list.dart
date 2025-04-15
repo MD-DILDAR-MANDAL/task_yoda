@@ -23,7 +23,30 @@ class buildTaskList extends StatelessWidget {
           3 => 'Other',
           _ => 'All',
         };
+        if(taskBox.isEmpty){
+          return Padding(
+          padding: const EdgeInsets.only(top:12.0,right: 0.0,bottom: 12.0,left: 0.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: Image.asset("assets/1.png"),
+                ),
+                Text(
+                  'No tasks yet',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.grey
+                  ),
+                ),
 
+              ],
+            ),
+          ),
+        );
+        }
         final tasks = box.values.toList();
 
         final todayTasks = tasks.where((t) =>
@@ -59,39 +82,74 @@ class buildTaskList extends StatelessWidget {
   }
 
   Widget _buildTile(String title, List<Task> tasks) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF6B8E23),
-          ),
-        ),
-        SizedBox(
-          height: 180,
-          child: ListView.builder(
-            itemCount: tasks.length,
-            itemBuilder: (context, index) {
-              final task = tasks[index];
-              final formattedDate = DateFormat.yMMMd().format(task.dateTime);
-              final formattedTime = DateFormat.Hm().format(task.dateTime);
+    String imagePath;
+    switch (title) {
+      case 'Today':
+        imagePath = 'assets/2.png';
+        break;
+      case 'Future':
+        imagePath = 'assets/3.png';
+        break;
+      case 'Completed':
+        imagePath = 'assets/4.png';
+        break;
+      default:
+        imagePath = 'assets/1.png'; // optional fallback
+  }
 
-              return checkData(
-                task: task,
-                formattedDate: formattedDate,
-                formattedTime: formattedTime,
-                onChanged: () {}, // No need for setState, ValueListenableBuilder handles it
-              );
-            },
+    return Stack(
+      children: [
+      Positioned(
+        bottom: 60,
+        right: 0,
+        child: Opacity(
+          opacity: 0.5, // Adjust opacity here
+          child: Image.asset(
+            imagePath,
+            width: 100, // Adjust size
+            fit: BoxFit.contain,
           ),
         ),
-        const Divider(
-          color: Color(0xFF2F4F4F),
-          height: 12
-          ),
+      ),
+
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF6B8E23),
+              ),
+            ),
+            SizedBox(
+              height: 180,
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  final task = tasks[index];
+                  final formattedDate = DateFormat.yMMMd().format(task.dateTime);
+                  final formattedTime = DateFormat.Hm().format(task.dateTime);
+        
+                  return checkData(
+                    task: task,
+                    formattedDate: formattedDate,
+                    formattedTime: formattedTime,
+                    onChanged: () {},
+                  );
+                },
+              ),
+            ),
+            const Divider(
+              color: Color(0xFF2F4F4F),
+              height: 12
+              ),
+          ],
+        ),
+      ),
       ],
     );
   }
