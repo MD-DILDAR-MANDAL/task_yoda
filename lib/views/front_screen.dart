@@ -98,11 +98,18 @@ class _FrontScreenState extends State<FrontScreen> {
                   children: [
                     const Text(
                       'Add New Task',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20, 
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2F4F4F),
+                        ),
                     ),
                     TextField(
                       controller: _nameController,
                       decoration: const InputDecoration(labelText: 'Enter Your Task'),
+                      style: TextStyle(
+                        color: Color(0xFF2F4F4F)
+                      ),
                     ),
                     DropdownButtonFormField<String>(
                       value: _selectedCategory,
@@ -115,6 +122,10 @@ class _FrontScreenState extends State<FrontScreen> {
                         });
                       },
                       decoration: const InputDecoration(labelText: 'Category'),
+                      style: TextStyle(
+                        color: Color(0xFF2F4F4F),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     TextFormField(

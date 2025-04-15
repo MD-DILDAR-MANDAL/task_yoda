@@ -88,7 +88,10 @@ class buildTaskList extends StatelessWidget {
             },
           ),
         ),
-        const Divider(color: Color(0xFF2F4F4F), height: 12),
+        const Divider(
+          color: Color(0xFF2F4F4F),
+          height: 12
+          ),
       ],
     );
   }
@@ -122,7 +125,7 @@ class _checkDataState extends State<checkData> {
           widget.task.isDone = val ?? false;
           widget.task.save();
         });
-        widget.onChanged(); // Triggers parent rebuild
+        widget.onChanged(); 
       },
       dense: true,
       checkboxScaleFactor: 0.8,
@@ -140,6 +143,7 @@ class _checkDataState extends State<checkData> {
                     decoration: widget.task.isDone
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
+                        color: Color(0xFF2F4F4F),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -151,10 +155,13 @@ class _checkDataState extends State<checkData> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red[700]),
+            icon: Icon(
+              Icons.delete, 
+              color: Color(0xFF2F4F4F)
+              ),
             onPressed: () {
               widget.task.delete();
-              widget.onChanged(); // Trigger list update on delete
+              widget.onChanged();
             },
           ),
         ],
