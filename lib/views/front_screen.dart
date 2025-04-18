@@ -70,7 +70,7 @@ class _FrontScreenState extends State<FrontScreen> {
         
               const Text(
                 'Visit \n Galactic Market \n (https://irozer.github.io) \n for more...',
-                textAlign: TextAlign.center, // Put your name here
+                textAlign: TextAlign.center,
                  style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w400
