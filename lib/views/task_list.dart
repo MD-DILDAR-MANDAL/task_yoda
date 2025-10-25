@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 class buildTaskList extends StatelessWidget {

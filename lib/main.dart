@@ -3,9 +3,7 @@ import 'package:task_yoda/views/front_screen.dart';
 import './models/task.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //initialize hive
   await Hive.initFlutter();
@@ -15,7 +13,6 @@ void main() async{
   await Hive.openBox<Task>('my_task_box');
 
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -23,13 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Task Yoda',
-      theme: ThemeData(
-        primarySwatch:Colors.green,
-      ),
-      home: const FrontScreen(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: FrontScreen());
   }
 }
